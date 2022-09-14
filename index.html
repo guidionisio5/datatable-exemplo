@@ -37,33 +37,87 @@
 
     </div><!-- final do container do menu-->
 
-    <div class="container border border-dark p-5 mt-2 rounded">
-        <h3>Gerenciamneto de Usuários</h3>
-        <form action="">
+    <div class="container border border-dark p-4 mt-2 rounded">
+        <h3 class="text-center">Gerenciamento de Usuários</h3>
+          <form class="p-3" action="">
             <div class="row">
-                <div class="col">
+                <div class="col-md">
                     <label class="form-label" for="nome">Nome</label>
                     <input class="form-control" type="text" name="nome" id="nome">
                 </div>
 
-                <div class="col">
+                <div class="col-md">
                     <label class="form-label" for="email">E-Mail</label>
                     <input class="form-control" type="text" name="email" id="email">
                 </div>
             </div>
             <div class="row">
-                <div class="col">
+                <div class="col-md">
                     <label class="form-label" for="senha">Senha</label>
                     <input class="form-control" type="password" name="senha" id="senha">
                 </div>
 
-                <div class="col">
+                <div class="col-md">
                     <label class="form-label" for="confirmar">Confirmar senha</label>
                     <input class="form-control" type="password" name="confirmar" id="confirmar">
                 </div>
             </div>
-            <button class="btn btn-success mt-2" type="submit">Cadastrar</button>
-        </form>
+
+            <div class="text-center p-3">
+              <button class="btn btn-success mt-2" type="submit">Cadastrar</button>
+            </div>
+          </form>
+
+        <!-- Datatable para listagem de dados -->
+
+        <div class="p-3">
+          <table class="table table-dark table-striped">
+            
+            <thead>
+              <tr>
+                <th class="text-center">Nome</th>
+                <th class="text-center">E-Mail</th>
+                <th class="text-center" colspan="2"">Ação</th>
+              </tr>
+            </thead>
+            
+            <tbody>
+              <tr>
+                <td>Guilherme</td>
+                <td>gui@gmail.com</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-primary">Alterar</button>
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-danger">Excluir</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Lucas</td>
+                <td>lucas@gmail.com</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-primary">Alterar</button>
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-danger">Excluir</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Kauã</td>
+                <td>kaua@gmail.com</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-primary">Alterar</button>
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-danger">Excluir</button>
+                </td>
+              </tr>
+            </tbody>
+          
+          </table>
+        </div>
     </div>
 
 
