@@ -4,15 +4,11 @@ $(document).ready( function () {
     // Executa a função de listar usuário
     listUser();
 
-    // inicia a datatable
-    $('#tabela').DataTable({
-      "language": { url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json'}
-    });
-  } );
+  });
 
   
 
-// função que adciona usuarios 
+// função adcionar usuarios 
 const addUser = () =>{
 
     // captura todo formulário e cria um formData
@@ -46,15 +42,17 @@ const addUser = () =>{
       // utilizando do if ternario para redução de escrita de codigo
       result.retorno == 'ok' ? $('#form-usuarios')[0].reset() : ''
 
+      // recarrega a tabela se inserir o usuario for sucesso
+      result.retorno == 'ok' ? listUser() : ''
     })
 
     
 }  
-// Final da função de add usuário
+// Final da função adicionar usuário
 
 
 
-// Função que lista os usuários cadastrados
+// Função listar os usuários cadastrados
 const listUser = () =>{
       // envio e recebimento de dados
       const result = fetch('backend/listUser.php',{
@@ -66,18 +64,35 @@ const listUser = () =>{
         // Aqui é tratado o retorno ao front
 
         // Função que irá montar as linhas da tabela, o map é um tipo de laço(for)
-        result.map(usuario=>{
+        // for(let cont=1;cont<result.length;cont++){} esse é outra maneira de fazer
+        result.map(user=>{
           $('#tabela-dados').append(`
             <tr>
-              <td>Guilherme</td>
-              <td>gui@gmail.com</td>
+              <td>${user.nome}</td>
+              <td>${user.email}</td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm btn-primary">Alterar</button>
-                <button type="button" class="btn btn-sm btn-danger">Excluir</button>
+                <button class="btn btn-sm btn-primary" type="button">Alterar</button>
+                <button class="btn btn-sm btn-danger" onclick="removeUser()" type="button">Excluir</button>
               </td>
             </tr>
           `)
         })
+
+        // inicia a datatable
+        $('#tabela').DataTable({
+          "language": { url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json'}
+        });
         
       })
 }
+// Final da função de listar usuário
+
+
+
+// função excluir o usuário cadastrado
+const remove = fetch('backend/removeUser.php',{
+  method: 'POST',
+  body: ''
+})
+.then()
+// Final da função excluir o usuário cadastrado
