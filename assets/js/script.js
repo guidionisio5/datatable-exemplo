@@ -17,4 +17,30 @@ const addUser = () =>{
       method: 'POST',
       body: dados
     })
+    .then((response=>response.json()))
+    .then((result)=>{
+      // Aqui é tratado o retorno ao front
+      if(result.retorno == 'ok'){
+        Swal.fire({
+          title: 'Atenção',
+          text: result.mensagem,
+          icon: 'success',
+          // utilizando do if ternario para redução de escrita de codigo
+          // icon: result.retorno == 'ok' ? 'success' : 'error'
+        })
+      }else{
+        Swal.fire({
+          title: 'Atenção',
+          text: result.mensagem,
+          icon: 'error',
+        })
+      }
+
+      // limpa os campos caso o retorno tenha sucesso 
+      // utilizando do if ternario para redução de escrita de codigo
+      result.retorno == 'ok' ? $('#form-usuarios')[0].reset() : ''
+
+    })
+
+    
 }  

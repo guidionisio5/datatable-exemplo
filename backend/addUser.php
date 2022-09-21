@@ -12,7 +12,7 @@ try{
 
     if($senha != $confirmar){
         // cria um array para armazenar a mensagem de erro
-        $retorno = array('Mensagem'=>'Senhas não conferem, verifique e tente novamente');
+        $retorno = array('retorno'=>'erro','mensagem'=>'Senhas não conferem, verifique e tente novamente');
         
         // cria uma variavel que ira receber o array acima convertido em JSON 
         $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
@@ -29,12 +29,17 @@ try{
     $comando->execute();
 
     // mensagem de retorno
-    $retorno = array('Mensagem'=>'Usuário adicionado com sucesso');
+    $retorno = array('retorno'=>'ok','mensagem'=>'Usuário adicionado com sucesso!');
     $json = json_encode($retorno, JSON_UNESCAPED_UNICODE); 
     echo $json;
 
 }catch(PDOException $erro){
-    echo $erro->getMessage();
+    // Tratamento de erro ou excercao
+    $retorno = array('retorno'=>'erro','mensagem'=>$erro->getMessage());
+    $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
+    echo $json;
 }
 
+// Fechar a conexão
+$con = null;
 ?>
