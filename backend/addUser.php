@@ -36,10 +36,12 @@ try{
 }catch(PDOException $erro){
     // Tratamento de erro ou excercao
     $retorno = array('retorno'=>'erro','mensagem'=>$erro->getMessage());
+    
     $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
     echo $json;
 }
 
 // Fechar a conexão
 $con = null;
+
 ?>
