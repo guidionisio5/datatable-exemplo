@@ -62,6 +62,14 @@ const listUser = () =>{
       .then((response=>response.json()))
       .then((result)=>{
         // Aqui é tratado o retorno ao front
+        let datahora = moment().format('DD/MM/YY HH:mm')
+        $('#horario-atualizado').html(datahora)
+
+        // destroi a tabela que foi iniciada
+        $("#tabela").dataTable().fnDestroy()
+
+        // limpa os dados da tabela
+        $("#tabela-dados").html('')
 
         // Função que irá montar as linhas da tabela, o map é um tipo de laço(for)
         // for(let cont=1;cont<result.length;cont++){} esse é outra maneira de fazer
@@ -70,17 +78,19 @@ const listUser = () =>{
             <tr>
               <td>${user.nome}</td>
               <td>${user.email}</td>
-              <td class="text-center">
-                <button class="btn btn-sm btn-primary" type="button">Alterar</button>
-                <button class="btn btn-sm btn-danger" onclick="removeUser()" type="button">Excluir</button>
+              <td>
+                <button class="btn btn-primary" type="button"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-danger" onclick="removeUser()" type="button"><i class="bi bi-trash"></i></button>
               </td>
             </tr>
           `)
         })
 
         // inicia a datatable
-        $('#tabela').DataTable({
-          "language": { url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json'}
+        $('#tabela').dataTable({
+          "language": { url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json'
+          },
+          retrieve: true,
         });
         
       })
