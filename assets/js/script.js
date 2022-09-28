@@ -78,9 +78,17 @@ const listUser = () =>{
             <tr>
               <td>${user.nome}</td>
               <td>${user.email}</td>
+              <td>${user.data_cadastro}</td>
+              <td>
+
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="ativo" ${user.ativo == 1 ? 'checked' : ''} onchange="updateUserActive(${user.id})">
+                </div>
+            
+              </td>
               <td>
                 <button class="btn btn-primary" type="button"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-danger" onclick="removeUser()" type="button"><i class="bi bi-trash"></i></button>
+                <button class="btn btn-danger" onclick="deleteUser(${user.id})" type="button"><i class="bi bi-trash"></i></button>
               </td>
             </tr>
           `)
@@ -95,14 +103,61 @@ const listUser = () =>{
         
       })
 }
+
+// CSS dinâmico de botão para sim e não
+/* <button class="btn btn-${user.ativo == 1 ? 'success' : 'danger'}" type='button'>${user.ativo == 1 ? '<i class="bi bi-toggle-on"></i>' : '<i class="bi bi-toggle-off"></i>'}</button>  */
+
 // Final da função de listar usuário
 
 
 
+// função que altera o status de ativo do usuario
+const updateUserActive = (id) => {
+  const result = fetch('backend/updateUserActive.php',{
+    method: 'POST',
+    body: `id=${id}`,
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+  })
+  .then((response) => response.json())
+  .then((result) => {
+    Swal.fire({
+      icon: result.retorno == 'ok' ? 'success' : 'error',
+      title: 'Atenção',
+      text: result.mensagem,
+      showConfiirmButton: false,
+      timer: 2000
+    })
+  })
+}
+// Final função que altera o status de ativo do usuario
+
+
+
 // função excluir o usuário cadastrado
-const remove = fetch('backend/removeUser.php',{
-  method: 'POST',
-  body: ''
-})
-.then()
+const deleteUser = (id) => {
+  const result = fetch('backend/deleteUser.php',{
+    method: 'POST',
+    body: `id=${id}`,
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+  })
+  .then((response) => response.json())
+  .then((result) => {
+
+    Swal.fire({
+      icon: result.retorno == 'ok' ? 'success' : 'error',
+      title: 'Atenção',
+      text: result.mensagem,
+      showConfiirmButton: false,
+      timer: 2000
+    })
+
+    // recarrega a listar usuário
+    listUser();
+
+  })
+}
 // Final da função excluir o usuário cadastrado
