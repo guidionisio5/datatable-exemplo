@@ -2,8 +2,10 @@ $(document).ready(function () {
 
 listUser()
 
-$('#telefone').inputmask('(99) 99999-9999')
-$('#cpf').inputmask('999.999.999-99')
+// utilizamos da bibloteca input mask para criar mascara de telefone
+$('#telefone').inputmask('(99) 99999-9999');
+// inputmask - campo cpf
+$('#cpf').inputmask('999.999.999-99');
 
 });
 

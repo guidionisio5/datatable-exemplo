@@ -3,12 +3,17 @@
 include 'function.php';
 
 try{
+
+    // define os caracteres que iremos remover dos campos preenchidos no form (replace)
+    $carac = array('(',')','-',' ','.');
+
     $nome = $_POST['nome'];
     $email = $_POST['email'];
+    $telefone = str_replace($carac,"",$_POST['telefone']);
+    $cpf = str_replace($carac,"",$_POST['cpf']);
     $senha = $_POST['senha'];
     $confirma = $_POST['confirmar'];
-    $telefone = $_POST['telefone'];
-    $cpf = $_POST['cpf'];
+    
 
     validaCampoVazio($nome,'nome');
     validaCampoVazio($email,'email');
@@ -16,6 +21,7 @@ try{
     validaCampoVazio($confirma,'confirma');
     validaCampoVazio($cpf,'cpf');
     validaCampoVazio($telefone,'telefone');
+
     checkEmailUser($email);
 
 
@@ -32,12 +38,10 @@ try{
     } 
 
     $senha_cripto = sha1($senha);
-    
 
-
-        $sql = "INSERT INTO tb_login (`nome`, `email`, `senha`,`telefone`,`cpf`) values ('$nome', '$email', '$senha_cripto','$telefone','$cpf')";
+        $sql = "INSERT INTO tb_login(`nome`, `email`, `telefone`, `cpf`, `senha`) values ('$nome', '$email', '$telefone', '$cpf', '$senha_cripto')";
         
-        $msg = "usuario adc";
+        $msg = "Usuário adicionado";
 
         addUpdDel($sql,$msg);
 
