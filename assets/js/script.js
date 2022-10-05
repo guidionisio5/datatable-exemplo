@@ -1,163 +1,147 @@
-// document.ready define scripts JS que serão executados assim que a página for carregada, que a página estiver "pronta" 
-$(document).ready( function () {
+$(document).ready(function () {
 
-    // Executa a função de listar usuário
     listUser();
 
-  });
+    // utilizamos da bibloteca input mask para criar mascara de telefone
+    $('#telefone').inputmask('(99) 99999-9999');
+    // inputmask - campo cpf
+    $('#cpf').inputmask('999.999.999-99');
 
-  
+});
 
-// função adcionar usuarios 
-const addUser = () =>{
+const addUser = () => {
 
-    // captura todo formulário e cria um formData
-    let dados = new FormData($('#form-usuarios')[0]);
+    // validação de campos vazios
+    // exemplo feito sem function 
 
-    // envio e recebimento de dados
-    const result = fetch('backend/addUser.php',{
-      method: 'POST',
-      body: dados
+    // let nome = $('#nome').val()
+
+    // if(nome == ''){
+    //     Swal.fire({
+    //         title: 'Atenção',
+    //         text: 'Preencha o campo do nome, por favor!',
+    //         icon: 'error'
+    //     })
+    //     return
+    // }
+
+    // let nome = document.getElementById('nome').value 
+    let dados = new FormData($('#form-usuarios')[0])
+
+    const result = fetch('backend/addUser.php', {
+        method: 'POST',
+        body: dados
     })
-    .then((response=>response.json()))
-    .then((result)=>{
-      // Aqui é tratado o retorno ao front
-      if(result.retorno == 'ok'){
-        Swal.fire({
-          title: 'Atenção',
-          text: result.mensagem,
-          icon: 'success',
-          // utilizando do if ternario para redução de escrita de codigo
-          // icon: result.retorno == 'ok' ? 'success' : 'error'
+        .then((response) => response.json())
+        .then((result) => {
+
+            Swal.fire({
+                title: 'Atenção',
+                text: result.Mensagem,
+                icon: result.retorno == 'ok' ? 'success' : 'error'
+            })
+
+            result.retorno == 'ok' ? $('#form-usuarios')[0].reset() : ''
+
+            result.retorno == 'ok' ? listUser() : ''
         })
-      }else{
-        Swal.fire({
-          title: 'Atenção',
-          text: result.mensagem,
-          icon: 'error',
-        })
-      }
 
-      // limpa os campos caso o retorno tenha sucesso 
-      // utilizando do if ternario para redução de escrita de codigo
-      result.retorno == 'ok' ? $('#form-usuarios')[0].reset() : ''
+}
 
-      // recarrega a tabela se inserir o usuario for sucesso
-      result.retorno == 'ok' ? listUser() : ''
-    })
-
-    
-}  
-// Final da função adicionar usuário
-
-
-
-// Função listar os usuários cadastrados
-const listUser = () =>{
-      // envio e recebimento de dados
-      const result = fetch('backend/listUser.php',{
+const listUser = () => {
+    const result = fetch('backend/listUser.php', {
         method: 'POST',
         body: ''
-      })
-      .then((response=>response.json()))
-      .then((result)=>{
-        // Aqui é tratado o retorno ao front
-        let datahora = moment().format('DD/MM/YY HH:mm')
-        $('#horario-atualizado').html(datahora)
+    })
+        .then((response) => response.json())
+        .then((result) => {
 
-        // destroi a tabela que foi iniciada
-        $("#tabela").dataTable().fnDestroy()
+            let datahora = moment().format('DD/MM/YY HH:mm')
+            $('#horario-atualizado').html(datahora)
 
-        // limpa os dados da tabela
-        $("#tabela-dados").html('')
+            $("#tabela").dataTable().fnDestroy();
+            $("#tabela-dados").html('')
 
-        // Função que irá montar as linhas da tabela, o map é um tipo de laço(for)
-        // for(let cont=1;cont<result.length;cont++){} esse é outra maneira de fazer
-        result.map(user=>{
-          $('#tabela-dados').append(`
+            result.map(usuario => {
+
+
+
+                $('#tabela-dados').append(`
             <tr>
-              <td>${user.nome}</td>
-              <td>${user.email}</td>
-              <td>${user.data_cadastro}</td>
-              <td>
-
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="ativo" ${user.ativo == 1 ? 'checked' : ''} onchange="updateUserActive(${user.id})">
-                </div>
-            
-              </td>
-              <td>
-                <button class="btn btn-primary" type="button"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-danger" onclick="deleteUser(${user.id})" type="button"><i class="bi bi-trash"></i></button>
-              </td>
+                <td>${usuario.nome}</td>
+                <td>${usuario.email}</td>
+                <td class="text-center">${moment(usuario.data_cadastro).format('DD/MM/YYYY HH:mm')}</td>
+                <td class="text-center">
+                        <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="${usuario.ativo == 1 ? 'flexSwitchCheckChecked' : 'flexSwitchCheckDefault'}" ${usuario.ativo == 1 ? 'checked' : ''} onchange="updateUserActive(${usuario.id})">
+                        <label class="form-check-label" for="${usuario.ativo == 1 ? 'flexSwitchCheckChecked' : 'flexSwitchCheckDefault'}">${usuario.ativo == 1 ? 'ativo' : 'desativado'}</label>
+                        </div>
+                </td>
+                <td class="text-center">
+                <button class="btn btn-primary" type="submit"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-danger" type="submit" onclick="removeUser(${usuario.id})"><i class="bi bi-person-dash"></i></button>
+                </td>
             </tr>
-          `)
+        `)
+            })
+            $('#tabela').DataTable({
+                "language": {
+                    url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json',
+                    retrive: true,
+                }
+
+            });
+        })
+}
+
+const removeUser = (id) => {
+    const result = fetch(`backend/removeUser.php`, {
+        method: 'POST',
+        body: `id=${id}`,
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
+    })
+
+    .then((response) => response.json())
+    .then((result) => {
+
+        Swal.fire({
+            icon: result.retorno == 'ok' ? 'success' : 'error',
+            title: result.Mensagem,
+            timer: 2000
         })
 
-        // inicia a datatable
-        $('#tabela').dataTable({
-          "language": { url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/pt-BR.json'
-          },
-          retrieve: true,
-        });
-        
-      })
+        listUser()
+    
+
+})
+
 }
 
-// CSS dinâmico de botão para sim e não
-/* <button class="btn btn-${user.ativo == 1 ? 'success' : 'danger'}" type='button'>${user.ativo == 1 ? '<i class="bi bi-toggle-on"></i>' : '<i class="bi bi-toggle-off"></i>'}</button>  */
-
-// Final da função de listar usuário
-
-
-
-// função que altera o status de ativo do usuario
 const updateUserActive = (id) => {
-  const result = fetch('backend/updateUserActive.php',{
-    method: 'POST',
-    body: `id=${id}`,
-    headers: {
-      'Content-type': 'application/x-www-form-urlencoded'
-    }
-  })
-  .then((response) => response.json())
-  .then((result) => {
-    Swal.fire({
-      icon: result.retorno == 'ok' ? 'success' : 'error',
-      title: 'Atenção',
-      text: result.mensagem,
-      showConfiirmButton: false,
-      timer: 2000
-    })
-  })
-}
-// Final função que altera o status de ativo do usuario
+    const result = fetch(`backend/_update_user_ative.php`, {
+        method: "POST",
+        body: `id=${id}`,
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
 
-
-
-// função excluir o usuário cadastrado
-const deleteUser = (id) => {
-  const result = fetch('backend/deleteUser.php',{
-    method: 'POST',
-    body: `id=${id}`,
-    headers: {
-      'Content-type': 'application/x-www-form-urlencoded'
-    }
-  })
-  .then((response) => response.json())
-  .then((result) => {
-
-    Swal.fire({
-      icon: result.retorno == 'ok' ? 'success' : 'error',
-      title: 'Atenção',
-      text: result.mensagem,
-      showConfiirmButton: false,
-      timer: 2000
     })
 
-    // recarrega a listar usuário
-    listUser();
+    .then((response) => response.json())
+    .then((result) => {
 
-  })
+        Swal.fire({
+            icon: result.retorno == 'ok' ? 'success' : 'error',
+            title: result.Mensagem,
+            timer: 2000
+        })
+
+        listUser()
+    });
+
+    
+
+
 }
-// Final da função excluir o usuário cadastrado

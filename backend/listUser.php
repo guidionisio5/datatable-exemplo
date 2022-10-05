@@ -1,28 +1,26 @@
 <?php
+    include 'conexao.php';
 
-include_once ('include/conexao.php');
+    try{
+        $sql = "SELECT id,nome,email,data_cadastro,ativo FROM tb_login";
+        
+        $comando = $con->prepare($sql);
 
-try{
+        $comando -> execute();
 
-    $sql = 'SELECT `id`,`nome`,`email`,`ativo`,`data_cadastro` FROM tb_usuarios';
+        $retorno = $comando ->fetchAll(pdo::FETCH_ASSOC);
 
-    $comando = $con->prepare($sql);
-    $comando->execute();
+        $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
 
-    // fetch ajuda a organizar o que virá do banco
-    $retorno = $comando->fetchAll(PDO::FETCH_ASSOC); 
-    $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
-    echo $json;
+        echo $json;
 
-}catch(PDOException $erro){
-    // Tratamento de erro ou excercao
-    $retorno = array('retorno'=>'erro','mensagem'=>$erro->getMessage());
-
-    $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
-    echo $json;
-}
-
-// Fechar a conexão
-$con = null;
-
+    }catch(PDOException $erro){
+        $retorno = array(
+            'retorno' => 'erro',
+            'Mensagem'=> $erro->getMessage());
+            $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
+    
+    
+            echo $json;
+    }
 ?>

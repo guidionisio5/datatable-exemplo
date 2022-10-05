@@ -1,46 +1,50 @@
 <?php
 
-// include do arquivo de conexao
-include_once('include/conexao.php');
+include 'function.php';
 
 try{
-
     $nome = $_POST['nome'];
     $email = $_POST['email'];
+    $telefone = $_POST['telefone'];
+    $cpf = $_POST['cpf'];
     $senha = $_POST['senha'];
-    $confirmar = $_POST['confirmar'];
+    $confirma = $_POST['confirmar'];
 
-    if($senha != $confirmar){
-        // cria um array para armazenar a mensagem de erro
-        $retorno = array('retorno'=>'erro','mensagem'=>'Senhas não conferem, verifique e tente novamente');
-        
-        // cria uma variavel que ira receber o array acima convertido em JSON 
+    validaCampoVazio($nome,'nome');
+    validaCampoVazio($email,'email');
+    validaCampoVazio($telefone,'telefone');
+    validaCampoVazio($cpf,'cpf');
+    validaCampoVazio($senha,'senha');
+    validaCampoVazio($confirma,'confirma');
+
+    checkEmailUser($email);
+
+
+    if($senha != $confirma) {
+
+       $retorno = array(
+        'retorno'=>'erro',
+        'Mensagem'=>'Senhas não conferem, tente novamente');
         $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
 
-        // retorno em formato JSON 
-        echo $json;
-        // encerra o script
-        exit;
-    }
+       echo $json;
+       exit();
 
-    $sql = "INSERT INTO tb_usuarios (`nome`,`email`,`senha`) VALUES ('$nome','$email','$senha')";
+    } 
 
-    $comando = $con->prepare($sql);
-    $comando->execute();
+    // Criptografar a senha do usuario
+    // Alguns algo de cript: sha1, md5, password hash php
+    
+    $senha_cripto = sha1($senha);
 
-    // mensagem de retorno
-    $retorno = array('retorno'=>'ok','mensagem'=>'Usuário adicionado com sucesso!');
-    $json = json_encode($retorno, JSON_UNESCAPED_UNICODE); 
-    echo $json;
+    $sql = "INSERT INTO tb_login (`nome`, `email`, `telefone`, `cpf`, `senha`) values ('$nome', '$email', '$telefone', '$cpf', '$senha_cripto')";
+        
+    $msg = "usuario adc";
 
-}catch(PDOException $erro){
-    // Tratamento de erro ou excercao
-    $retorno = array('retorno'=>'erro','mensagem'=>$erro->getMessage());
-    $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
-    echo $json;
+    addUpdDel($sql,$msg);
+
+}catch(PDOException $erro) {
+    pdocatch($erro);
 }
-
-// Fechar a conexão
-$con = null;
 
 ?>
