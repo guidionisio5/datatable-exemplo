@@ -1,12 +1,7 @@
 <?php
 
-// linha de codigo que desabilita o warnings e erro do PHP
-// error_reporting(0);
-
 include_once 'conexao.php';
 
-// define que a variável será de uso global
-// global $con;
 
 function validaCampoVazio($campo,$nomedocampo){
 
@@ -62,7 +57,7 @@ function checkEmailUser($email){
     if($validaEmail !=  null){
         $retorno = array(
             'retorno'=>'error  ',
-            'Mensagem'=>'Email já cadastrado!!!'
+            'Mensagem'=>'Email ja cadastrado!!!'
         );
         $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
 

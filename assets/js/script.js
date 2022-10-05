@@ -1,18 +1,15 @@
 $(document).ready(function () {
 
-    listUser();
+listUser()
 
-    // utilizamos da bibloteca input mask para criar mascara de telefone
-    $('#telefone').inputmask('(99) 99999-9999');
-    // inputmask - campo cpf
-    $('#cpf').inputmask('999.999.999-99');
+$('#telefone').inputmask('(99) 99999-9999')
+$('#cpf').inputmask('999.999.999-99')
 
 });
 
 const addUser = () => {
 
     // validação de campos vazios
-    // exemplo feito sem function 
 
     // let nome = $('#nome').val()
 

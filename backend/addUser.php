@@ -5,18 +5,17 @@ include 'function.php';
 try{
     $nome = $_POST['nome'];
     $email = $_POST['email'];
-    $telefone = $_POST['telefone'];
-    $cpf = $_POST['cpf'];
     $senha = $_POST['senha'];
     $confirma = $_POST['confirmar'];
+    $telefone = $_POST['telefone'];
+    $cpf = $_POST['cpf'];
 
     validaCampoVazio($nome,'nome');
     validaCampoVazio($email,'email');
-    validaCampoVazio($telefone,'telefone');
-    validaCampoVazio($cpf,'cpf');
     validaCampoVazio($senha,'senha');
     validaCampoVazio($confirma,'confirma');
-
+    validaCampoVazio($cpf,'cpf');
+    validaCampoVazio($telefone,'telefone');
     checkEmailUser($email);
 
 
@@ -32,16 +31,15 @@ try{
 
     } 
 
-    // Criptografar a senha do usuario
-    // Alguns algo de cript: sha1, md5, password hash php
-    
     $senha_cripto = sha1($senha);
+    
 
-    $sql = "INSERT INTO tb_login (`nome`, `email`, `telefone`, `cpf`, `senha`) values ('$nome', '$email', '$telefone', '$cpf', '$senha_cripto')";
+
+        $sql = "INSERT INTO tb_login (`nome`, `email`, `senha`,`telefone`,`cpf`) values ('$nome', '$email', '$senha_cripto','$telefone','$cpf')";
         
-    $msg = "usuario adc";
+        $msg = "usuario adc";
 
-    addUpdDel($sql,$msg);
+        addUpdDel($sql,$msg);
 
 }catch(PDOException $erro) {
     pdocatch($erro);

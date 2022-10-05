@@ -6,7 +6,7 @@ try{
 define('SERVIDOR','localhost');
 define('USUARIO', 'root');
 define('SENHA','');
-define('BANCO', 'db_datatable-lucas');
+define('BANCO', 'db_datatable');
 
 $con = new PDO("mysql:host=".SERVIDOR.";dbname=".BANCO.";charset=utf8", USUARIO, SENHA);
 // set the PDO error mode to exception
