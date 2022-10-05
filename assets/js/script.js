@@ -65,7 +65,7 @@ const listUser = () => {
 
 
 
-                $('#tabela-dados').append(`
+            $('#tabela-dados').append(`
             <tr>
                 <td>${usuario.nome}</td>
                 <td>${usuario.email}</td>
@@ -77,10 +77,11 @@ const listUser = () => {
                         </div>
                 </td>
                 <td class="text-center">
-                <button class="btn btn-primary" type="submit"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#modal-editar-usuarios"><i class="bi bi-pencil-square"></i></button>
                 <button class="btn btn-danger" type="submit" onclick="removeUser(${usuario.id})"><i class="bi bi-person-dash"></i></button>
                 </td>
             </tr>
+
         `)
             })
             $('#tabela').DataTable({
