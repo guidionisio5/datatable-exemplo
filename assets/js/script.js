@@ -77,8 +77,8 @@ const listUser = () => {
                         </div>
                 </td>
                 <td class="text-center">
-                <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#modal-editar-usuarios"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-danger" type="submit" onclick="removeUser(${usuario.id})"><i class="bi bi-person-dash"></i></button>
+                <button class="btn btn-primary" type="button" onclick="listUserID(${usuario.id})"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-danger" type="button" onclick="removeUser(${usuario.id})"><i class="bi bi-person-dash"></i></button>
                 </td>
             </tr>
 
@@ -143,5 +143,61 @@ const updateUserActive = (id) => {
 
     
 
+
+}
+
+
+const listUserID = (id) => {
+    // lista os dados do usuario por ID, para alteração de dados
+    const result = fetch(`backend/listUserID.php`, {
+        method: 'POST',
+        body: `id=${id}`,
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
+    })
+
+    .then((response) => response.json())
+    .then((result) => {
+
+        // preenche os dados dentro do form editar usuarios      
+        $('#edita-nome').val(result[0].nome)
+        $('#edita-email').val(result[0].email)
+        $('#edita-telefone').val(result[0].telefone)
+        $('#edita-cpf').val(result[0].cpf)
+        
+        $('#edita-telefone').inputmask('(99) 99999-9999');
+        $('#edita-cpf').inputmask('999.999.999-99');
+
+        // aqui teria que ser implementado toda a requisição para backend PHP 
+        // o modal terá que ser exibido dentro do result 
+        // .then((result)) => (o codigo abaixo ficara aqui)
+    
+        // const modalEditar = new bootstrap.Modal(document.getElementById('#modal-editar-usuarios'))
+        const modalEditar = new bootstrap.Modal('#modal-editar-usuarios');
+
+        modalEditar.show();
+    });
+}
+
+const updateUser = (id) => {
+    const result = fetch(`backend/updateUser.php`, {
+        method: 'POST',
+        body: `id=${id}`,
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
+    })
+
+    .then((response) => response.json())
+    .then((result) => {
+
+        Swal.fire({
+            icon: result.retorno == 'ok' ? 'success' : 'error',
+            title: result.Mensagem,
+            timer: 2000
+        })
+
+})
 
 }
