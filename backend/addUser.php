@@ -13,7 +13,6 @@ try{
     $cpf = str_replace($carac,"",$_POST['cpf']);
     $senha = $_POST['senha'];
     $confirma = $_POST['confirmar'];
-    
 
     validaCampoVazio($nome,'nome');
     validaCampoVazio($email,'email');

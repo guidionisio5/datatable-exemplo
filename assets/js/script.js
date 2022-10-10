@@ -149,6 +149,9 @@ const updateUserActive = (id) => {
 
 const listUserID = (id) => {
     // lista os dados do usuario por ID, para alteração de dados
+    // igualzin o addUser
+    // JS igual a função addUser
+    // PHP igual o addUser.php
     const result = fetch(`backend/listUserID.php`, {
         method: 'POST',
         body: `id=${id}`,
@@ -181,6 +184,9 @@ const listUserID = (id) => {
 }
 
 const updateUser = (id) => {
+ 
+    let dados = new FormData($('#form-usuarios-editar')[0])
+
     const result = fetch(`backend/updateUser.php`, {
         method: 'POST',
         body: `id=${id}`,
