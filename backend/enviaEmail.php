@@ -13,110 +13,114 @@ date_default_timezone_set('America/Sao_Paulo');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
-// usada apenas se estiver utilizando grenciador de pacotes conposer
-// require '../vendor/autoload.php';
+// funcao de envia email
+function enviaEmail($destinatario_email, $destinatario_nome){
 
-// importação manual dos arquivos necessarios para funcionamento do PHPMailer
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+    // CONFIG EMAIL
 
-//Create a new PHPMailer instance
-$mail = new PHPMailer();
+    // Configuracao do servidor de email
+    $email_servidor = 'smtp.gmail.com';
+    $email_porta = 465;
+    $email_usuario = 'tecnico22asenac@gmail.com';
+    $email_usuario_senha = 'zvfarpeztyqgtrhe';
+    $email_usuario_nome = 'Técnico 22A';
 
-// Altera o charset para utf-8
-$mail->CharSet = 'UTF-8';
+    // Configuracao da mensagem
+    $email_assunto = 'Teste PHPMailer';
+    $email_corpo = 'Teste de email utilizando PHPMailer - Corpo';
 
-//Tell PHPMailer to use SMTP
-$mail->isSMTP();
+    // // Quem ira receber o email 
+    // $destinatario_email = $_POST['email'];
+    // $destinatario_nome = $_POST['nome'];
 
-//Enable SMTP debugging
-//SMTP::DEBUG_OFF = off (for production use)
-//SMTP::DEBUG_CLIENT = client messages
-//SMTP::DEBUG_SERVER = client and server messages
-$mail->SMTPDebug = SMTP::DEBUG_OFF;
+    // usada apenas se estiver utilizando grenciador de pacotes conposer
+    // require '../vendor/autoload.php';
 
-//Set the hostname of the mail server
-// endereco do servidor de envio de emails da empresa/provedor 
-$mail->Host = 'smtp.gmail.com';
-//Use `$mail->Host = gethostbyname('smtp.gmail.com');`
-//if your network does not support SMTP over IPv6,
-//though this may cause issues with TLS
+    // importação manual dos arquivos necessarios para funcionamento do PHPMailer
+    require 'PHPMailer/src/Exception.php';
+    require 'PHPMailer/src/PHPMailer.php';
+    require 'PHPMailer/src/SMTP.php';
 
-//Set the SMTP port number:
-// - 465 for SMTP with implicit TLS, a.k.a. RFC8314 SMTPS or
-// - 587 for SMTP+STARTTLS
-$mail->Port = 465;
+    //Create a new PHPMailer instance
+    $mail = new PHPMailer();
 
-//Set the encryption mechanism to use:
-// - SMTPS (implicit TLS on port 465) or
-// - STARTTLS (explicit TLS on port 587)
-$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    // Altera o charset para utf-8
+    $mail->CharSet = 'UTF-8';
 
-//Whether to use SMTP authentication
-$mail->SMTPAuth = true;
+    //Tell PHPMailer to use SMTP
+    $mail->isSMTP();
 
-//Username to use for SMTP authentication - use full email address for gmail
-$mail->Username = 'tecnico22asenac@gmail.com';
+    //Enable SMTP debugging
+    //SMTP::DEBUG_OFF = off (for production use)
+    //SMTP::DEBUG_CLIENT = client messages
+    //SMTP::DEBUG_SERVER = client and server messages
+    $mail->SMTPDebug = SMTP::DEBUG_OFF;
 
-//Password to use for SMTP authentication
-$mail->Password = 'zvfarpeztyqgtrhe';
+    //Set the hostname of the mail server
+    // endereco do servidor de envio de emails da empresa/provedor 
+    $mail->Host = $email_servidor;
+    //Use `$mail->Host = gethostbyname('smtp.gmail.com');`
+    //if your network does not support SMTP over IPv6,
+    //though this may cause issues with TLS
 
-//Set who the message is to be sent from
-//Note that with gmail you can only use your account address (same as `Username`)
-//or predefined aliases that you have configured within your account.
-//Do not use user-submitted addresses in here
-$mail->setFrom('tecnico22asenac@gmail.com', 'Técnico 22a');
+    //Set the SMTP port number:
+    // - 465 for SMTP with implicit TLS, a.k.a. RFC8314 SMTPS or
+    // - 587 for SMTP+STARTTLS
+    $mail->Port = $email_porta;
 
-//Set an alternative reply-to address
-//This is a good place to put user-submitted addresses
-$mail->addReplyTo('tecnico22asenac@gmail.com', 'Técnico 22a');
+    //Set the encryption mechanism to use:
+    // - SMTPS (implicit TLS on port 465) or
+    // - STARTTLS (explicit TLS on port 587)
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
-//Set who the message is to be sent to
-$mail->addAddress('guidionisio5@gmail.com', 'Guilherme');
+    //Whether to use SMTP authentication
+    $mail->SMTPAuth = true;
 
-//Set the subject line
-$mail->Subject = 'Teste PHPMailer';
+    //Username to use for SMTP authentication - use full email address for gmail
+    $mail->Username = $email_usuario;
 
-//Read an HTML message body from an external file, convert referenced images to embedded,
-//convert HTML into a basic plain-text alternative body
-// $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
+    //Password to use for SMTP authentication
+    $mail->Password = $email_usuario_senha;
 
-//Replace the plain text body with one created manually
-// $mail->AltBody = 'This is a plain-text message body';
+    //Set who the message is to be sent from
+    //Note that with gmail you can only use your account address (same as `Username`)
+    //or predefined aliases that you have configured within your account.
+    //Do not use user-submitted addresses in here
+    $mail->setFrom($email_usuario, $email_usuario_nome);
 
-$mail->Body = 'Teste de email utilizando PHPMailer - Corpo';
+    //Set an alternative reply-to address
+    //This is a good place to put user-submitted addresses
+    $mail->addReplyTo($email_usuario, $email_usuario_nome);
 
-//Attach an image file
-// $mail->addAttachment('images/phpmailer_mini.png');
+    //Set who the message is to be sent to
+    $mail->addAddress($destinatario_email, $destinatario_nome);
 
-//send the message, check for errors
-if (!$mail->send()) {
-    echo 'Mailer Error: ' . $mail->ErrorInfo;
-} else {
-    echo 'Message sent!';
-    //Section 2: IMAP
-    //Uncomment these to save your message in the 'Sent Mail' folder.
-    #if (save_mail($mail)) {
-    #    echo "Message saved!";
-    #}
-}
+    //Set the subject line
+    $mail->Subject = $email_assunto;
 
-//Section 2: IMAP
-//IMAP commands requires the PHP IMAP Extension, found at: https://php.net/manual/en/imap.setup.php
-//Function to call which uses the PHP imap_*() functions to save messages: https://php.net/manual/en/book.imap.php
-//You can use imap_getmailboxes($imapStream, '/imap/ssl', '*' ) to get a list of available folders or labels, this can
-//be useful if you are trying to get this working on a non-Gmail IMAP server.
-function save_mail($mail)
-{
-    //You can change 'Sent Mail' to any other folder or tag
-    $path = '{imap.gmail.com:993/imap/ssl}[Gmail]/Sent Mail';
+    //Read an HTML message body from an external file, convert referenced images to embedded,
+    //convert HTML into a basic plain-text alternative body
+    // $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
 
-    //Tell your server to open an IMAP connection using the same username and password as you used for SMTP
-    $imapStream = imap_open($path, $mail->Username, $mail->Password);
+    //Replace the plain text body with one created manually
+    // $mail->AltBody = 'This is a plain-text message body';
 
-    $result = imap_append($imapStream, $path, $mail->getSentMIMEMessage());
-    imap_close($imapStream);
+    $mail->Body = $email_corpo;
 
-    return $result;
+    //Attach an image file
+    // $mail->addAttachment('images/phpmailer_mini.png');
+
+    //send the message, check for errors
+    if (!$mail->send()) {
+        return false;
+        // echo 'Mailer Error: ' . $mail->ErrorInfo;
+    } else {
+        return true;
+        // echo 'Message sent!';
+        //Section 2: IMAP
+        //Uncomment these to save your message in the 'Sent Mail' folder.
+        #if (save_mail($mail)) {
+        #    echo "Message saved!";
+        #}
+    }
 }

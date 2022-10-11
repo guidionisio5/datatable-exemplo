@@ -1,6 +1,7 @@
 <?php
 
 include 'function.php';
+include 'enviaEmail.php';
 
 try{
 
@@ -27,11 +28,11 @@ try{
     if($senha != $confirma) {
 
        $retorno = array(
-        'retorno'=>'erro',
-        'Mensagem'=>'Senhas não conferem, tente novamente');
-        $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
+            'retorno'=>'erro',
+            'Mensagem'=>'Senhas não conferem, tente novamente');
+            $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
 
-       echo $json;
+            echo $json;
        exit();
 
     } 
@@ -43,6 +44,9 @@ try{
         $msg = "Usuário adicionado";
 
         addUpdDel($sql,$msg);
+
+        enviaEmail($email,$nome);
+
 
 }catch(PDOException $erro) {
     pdocatch($erro);
