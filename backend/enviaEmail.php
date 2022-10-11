@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Sao_Paulo');
+
 /**
  * This example shows settings to use when sending via Google's Gmail servers.
  * This uses traditional id & password authentication - look at the gmail_xoauth.phps
@@ -19,9 +21,11 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-
 //Create a new PHPMailer instance
 $mail = new PHPMailer();
+
+// Altera o charset para utf-8
+$mail->CharSet = 'UTF-8';
 
 //Tell PHPMailer to use SMTP
 $mail->isSMTP();
@@ -30,9 +34,10 @@ $mail->isSMTP();
 //SMTP::DEBUG_OFF = off (for production use)
 //SMTP::DEBUG_CLIENT = client messages
 //SMTP::DEBUG_SERVER = client and server messages
-$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+$mail->SMTPDebug = SMTP::DEBUG_OFF;
 
 //Set the hostname of the mail server
+// endereco do servidor de envio de emails da empresa/provedor 
 $mail->Host = 'smtp.gmail.com';
 //Use `$mail->Host = gethostbyname('smtp.gmail.com');`
 //if your network does not support SMTP over IPv6,
@@ -52,36 +57,38 @@ $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 $mail->SMTPAuth = true;
 
 //Username to use for SMTP authentication - use full email address for gmail
-$mail->Username = 'username@gmail.com';
+$mail->Username = 'tecnico22asenac@gmail.com';
 
 //Password to use for SMTP authentication
-$mail->Password = 'yourpassword';
+$mail->Password = 'zvfarpeztyqgtrhe';
 
 //Set who the message is to be sent from
 //Note that with gmail you can only use your account address (same as `Username`)
 //or predefined aliases that you have configured within your account.
 //Do not use user-submitted addresses in here
-$mail->setFrom('from@example.com', 'First Last');
+$mail->setFrom('tecnico22asenac@gmail.com', 'Técnico 22a');
 
 //Set an alternative reply-to address
 //This is a good place to put user-submitted addresses
-$mail->addReplyTo('replyto@example.com', 'First Last');
+$mail->addReplyTo('tecnico22asenac@gmail.com', 'Técnico 22a');
 
 //Set who the message is to be sent to
-$mail->addAddress('whoto@example.com', 'John Doe');
+$mail->addAddress('guidionisio5@gmail.com', 'Guilherme');
 
 //Set the subject line
-$mail->Subject = 'PHPMailer GMail SMTP test';
+$mail->Subject = 'Teste PHPMailer';
 
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->msgHTML(file_get_contents('contents.html'), __DIR__);
+// $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
 
 //Replace the plain text body with one created manually
-$mail->AltBody = 'This is a plain-text message body';
+// $mail->AltBody = 'This is a plain-text message body';
+
+$mail->Body = 'Teste de email utilizando PHPMailer - Corpo';
 
 //Attach an image file
-$mail->addAttachment('images/phpmailer_mini.png');
+// $mail->addAttachment('images/phpmailer_mini.png');
 
 //send the message, check for errors
 if (!$mail->send()) {
