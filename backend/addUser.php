@@ -1,7 +1,7 @@
 <?php
 
 include 'function.php';
-include 'enviaEmail.php';
+// include 'enviaEmail.php';
 
 try{
 
@@ -23,6 +23,7 @@ try{
     validaCampoVazio($telefone,'telefone');
 
     checkEmailUser($email);
+    checkCpfUser($cpf);
 
 
     if($senha != $confirma) {
@@ -45,7 +46,7 @@ try{
 
         addUpdDel($sql,$msg);
 
-        enviaEmail($email,$nome);
+        // enviaEmail($email,$nome);
 
 
 }catch(PDOException $erro) {

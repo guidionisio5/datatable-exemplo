@@ -66,4 +66,27 @@ function checkEmailUser($email){
     }
 
 }
+
+function checkCpfUser($cpf){
+
+    $sql = "SELECT cpf FROM tb_login WHERE cpf = '$cpf'";
+
+    $comando = $GLOBALS['con'] -> prepare($sql);
+
+    $comando-> execute();
+
+    $validaCpf = $comando -> fetchAll(PDO::FETCH_ASSOC);
+
+    if($validaCpf !=  null){
+        $retorno = array(
+            'retorno'=>'error  ',
+            'Mensagem'=>'CPF já cadastrado!!!'
+        );
+        $json = json_encode($retorno, JSON_UNESCAPED_UNICODE);
+
+        echo $json;
+        exit;
+    }
+
+}
 ?>
